@@ -4,6 +4,8 @@ const Post = require('../models/Post');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const upload= require('../middleware/uploadMiddleware');
+
 
 const adminLayout = '../views/layouts/admin';
 const jwtSecret = process.env.JWT_SECRET;
@@ -131,24 +133,21 @@ router.get('/add-post', authMiddleware, async (req, res) => {
  * POST /
  * Admin - Create New Post
 */
-router.post('/add-post', authMiddleware, async (req, res) => {
+router.post('/add-post', authMiddleware, upload.single('image'), async (req, res) => {
   try {
-    try {
-      const newPost = new Post({
-        title: req.body.title,
-        body: req.body.body
-      });
+    const newPost = new Post({
+      title: req.body.title,
+      body: req.body.body,
+      image: req.file ? '/uploads/' + req.file.filename : null
+    });
 
-      await Post.create(newPost);
-      res.redirect('/dashboard');
-    } catch (error) {
-      console.log(error);
-    }
-
+    await newPost.save();
+    res.redirect('/dashboard');
   } catch (error) {
     console.log(error);
   }
 });
+
 
 
 /**
@@ -182,21 +181,24 @@ router.get('/edit-post/:id', authMiddleware, async (req, res) => {
  * PUT /
  * Admin - Create New Post
 */
-router.put('/edit-post/:id', authMiddleware, async (req, res) => {
+// PUT /edit-post/:id
+router.put('/edit-post/:id', authMiddleware, upload.single('image'), async (req, res) => {
   try {
-
-    await Post.findByIdAndUpdate(req.params.id, {
+    const updateFields = {
       title: req.body.title,
       body: req.body.body,
       updatedAt: Date.now()
-    });
+    };
 
+    if (req.file) {
+      updateFields.image = '/uploads/' + req.file.filename;
+    }
+
+    await Post.findByIdAndUpdate(req.params.id, updateFields);
     res.redirect(`/edit-post/${req.params.id}`);
-
   } catch (error) {
     console.log(error);
   }
-
 });
 
 
@@ -266,6 +268,21 @@ router.get('/logout', (req, res) => {
   //res.json({ message: 'Logout successful.'});
   res.redirect('/');
 });
+
+/**
+ * DELETE /
+ * Admin - Delete All Posts
+ */
+router.delete('/delete-all-posts', authMiddleware, async (req, res) => {
+  try {
+    await Post.deleteMany({});
+    res.redirect('/dashboard');
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Failed to delete all posts.");
+  }
+});
+
 
 
 module.exports = router;

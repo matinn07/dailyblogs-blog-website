@@ -1,26 +1,35 @@
 <div class="admin-title">
   <h2>Posts</h2>
-  <a href="/add-post" class="button">+ Add New</a>
+  <div class="admin-buttons">
+    <a href="/add-post" class="button">+ Add New</a>
+    <form action="/delete-all-posts?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete ALL posts?');">
+      <button type="submit" class="btn-delete-all">🗑️ Delete All</button>
+    </form>
+  </div>
 </div>
 
 <ul class="admin-posts">
-
   <% data.forEach(post => { %>
-   
-    <li>
-      <a href="/post/<%= post._id %>">
-        <%= post.title %> &nearr;
-      </a>
-      <div class="admin-post-controls">
-        <a href="/edit-post/<%= post._id %>" class="btn">Edit</a>
+    <li class="admin-post-item">
+      <div class="admin-post-content">
+        <div class="admin-post-image">
+          <% if (post.image) { %>
+            <img src="<%= post.image %>" alt="Post Image" />
+          <% } %>
+        </div>
 
-        <form action="/delete-post/<%= post._id %>?_method=DELETE" method="POST">
-          <input type="submit" value="Delete" class="btn-delete btn">
-        </form>
-
+        <div class="admin-post-text">
+          <a href="/post/<%= post._id %>" class="admin-post-title">
+            <%= post.title %> &nearr;
+          </a>
+          <div class="admin-post-controls">
+            <a href="/edit-post/<%= post._id %>" class="btn">Edit</a>
+            <form action="/delete-post/<%= post._id %>?_method=DELETE" method="POST">
+              <input type="submit" value="Delete" class="btn-delete btn">
+            </form>
+          </div>
+        </div>
       </div>
-
     </li>
-
   <% }) %>
 </ul>

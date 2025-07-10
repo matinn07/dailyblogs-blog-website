@@ -177,4 +177,45 @@ router.get('/about', (req, res) => {
 // insertPostData();
 
 
+
+
+/**
+ * GET /contact
+*/
+router.get('/contact', (req, res) => {
+  res.render('contact', {
+    currentRoute: '/contact',
+    successMessage: false
+  });
+});
+
+/**
+ * POST /contact
+ * Handle contact form submission
+*/
+router.post('/contact', (req, res) => {
+  const { name, email, message } = req.body;
+
+  const nameValid = /^[A-Za-z\s]+$/.test(name);
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  if (!nameValid || !emailValid || !message.trim()) {
+    return res.status(400).send("Invalid input data.");
+  }
+
+  // You can optionally log or store the message
+  console.log("📨 New Contact Message:");
+  console.log({ name, email, message });
+
+  res.render('contact', {
+    currentRoute: '/contact',
+    successMessage: true
+  });
+});
+
+
+
+
+
+
 module.exports = router;

@@ -3,17 +3,17 @@
 </div>
 
 <section class="articles">
-
-  <ul class="article-ul">
+  <div class="article-grid">
     <% data.forEach(post => { %>
-      <li>
+      <div class="article-card">
         <a href="/post/<%= post._id %>">
-          <span><%= post.title %></span>
-          <span class="article-list__date"><%= post.createdAt.toDateString() %></span>
+          <% if (post.image) { %>
+            <img src="<%= post.image %>" alt="<%= post.title %>" class="article-image" />
+          <% } %>
+          <h3 class="article-title"><%= post.title %></h3>
+          <p class="article-date"><%= post.createdAt.toDateString() %></p>
         </a>
-      </li>
+      </div>
     <% }) %>
-  </ul>
-
-
+  </div>
 </section>

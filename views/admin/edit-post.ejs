@@ -1,21 +1,35 @@
 <a href="/dashboard">&larr; Back</a>
+
 <div class="admin-title">
   <h2>View / Edit Post</h2>
 
   <form action="/delete-post/<%= data._id %>?_method=DELETE" method="POST">
     <input type="submit" value="Delete" class="btn-delete btn">
   </form>
-
 </div>
 
-<form action="/edit-post/<%= data._id %>?_method=PUT" method="POST">
-
+<form action="/edit-post/<%= data._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
   <label for="title"><b>Title</b></label>
-  <input type="text" placeholder="Post Title" name="title" value="<%= data.title %>">
+  <input type="text" name="title" placeholder="Post Title" value="<%= data.title %>">
 
   <label for="body"><b>Content</b></label>
   <textarea name="body" cols="50" rows="10"><%= data.body %></textarea>
 
-  <input type="submit" value="Update" class="btn">
+  <div class="image-edit-section">
+    <div class="current-image">
+      <label><b>Current Image</b></label><br />
+      <% if (data.image) { %>
+        <img src="<%= data.image %>" alt="Current Post Image" />
+      <% } else { %>
+        <p>No image uploaded.</p>
+      <% } %>
+    </div>
 
+    <div class="upload-image">
+      <label for="image"><b>Change Image</b></label>
+      <input type="file" name="image" accept="image/*" class="file-input">
+    </div>
+  </div>
+
+  <input type="submit" value="Update" class="btn">
 </form>
