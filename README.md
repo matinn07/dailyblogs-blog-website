@@ -9,7 +9,7 @@ This project is built as a **portfolio project** to demonstrate real-world full-
 
 ## 🚀 Live Demo
 
-🔗 https://dailyblogs.onrender.com  
+🔗 [https://dailyblogs.onrender.com/](https://dailyblogs-blog-website.onrender.com/)
 ⚠️ *Deployed on Render Free Tier – first load may take a few seconds due to cold start*
 
 ---
@@ -128,4 +128,5 @@ Install Dependencies
 Create .env file, login to mongodb atlas and create cluster and paste connection string
 MONGO_URI=your_mongodb_atlas_connection_string
 npm start
+
 
