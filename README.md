@@ -123,3 +123,9 @@ This project is built as a **portfolio project** to demonstrate real-world full-
 ```bash
 git clone https://github.com/matinn07/dailyblogs-blog-website.git
 cd Dailyblogs-Website
+Install Dependencies
+-npm install
+Create .env file, login to mongodb atlas and create cluster and paste connection string
+MONGO_URI=your_mongodb_atlas_connection_string
+npm start
+
